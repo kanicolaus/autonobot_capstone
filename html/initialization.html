@@ -1,0 +1,269 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>initialization</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-12-10"><meta name="DC.source" content="initialization.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="comment">% This program initializes the variables used throughout the process</span>
+<span class="comment">% of controlling the Fanuc M-16iB Industrial Robot Arm &amp; the attached</span>
+<span class="comment">% end-effector.</span>
+
+clc;
+disp(<span class="string">'*****************************************************'</span>)
+disp(<span class="string">'*          FANUC INDUSTRIAL ROBOT TEAM              *'</span>);
+disp(<span class="string">'*                  FALL 2015                        *'</span>);
+disp(<span class="string">'*   JEREMY HOOPER | KARL NICOLAUS | RICHARD WOOD    *'</span>);
+disp(<span class="string">'*****************************************************'</span>);
+pause(5);
+
+
+clear; clc; warning <span class="string">off</span>; close <span class="string">all</span>;
+disp(<span class="string">'Initiate operation "SUCH AMAZE, VERY BALLS, MUCH WOW"'</span>);
+<span class="comment">% Initialize the object lane camera</span>
+laneCam = webcam(2);
+laneCam.Resolution = <span class="string">'160x120'</span>;
+<span class="comment">% Initialize the communication relay board</span>
+CommsPneumDuino = arduino(<span class="string">'com3'</span>,<span class="string">'uno'</span>);
+<span class="comment">% Initialize the motor control board</span>
+pwmDuino = arduino(<span class="string">'com6'</span>,<span class="string">'uno'</span>);
+<span class="comment">% Initialize the end-effector camera</span>
+endEffCam = webcam(1);
+endEffCam.Resolution = <span class="string">'160x120'</span>;
+<span class="comment">% endEffCam.Brightness = 150;</span>
+
+<span class="comment">% Initialize variables used throughout the program(s)</span>
+
+<span class="comment">% Arduino pin variables</span>
+<span class="comment">% - as wired on the date of the demonstration 12/8/2015</span>
+laneRed = <span class="string">'D2'</span>; <span class="comment">% DI[6] in robot controller</span>
+laneGreen = <span class="string">'D3'</span>; <span class="comment">% DI[5]</span>
+laneBlue = <span class="string">'D4'</span>; <span class="comment">% DI[4]</span>
+dropRed = <span class="string">'D5'</span>; <span class="comment">% DI[3]</span>
+dropGreen = <span class="string">'D6'</span>; <span class="comment">% DI[2]</span>
+dropBlue = <span class="string">'D7'</span>; <span class="comment">% DI[1]</span>
+endEff = <span class="string">'D8'</span>; <span class="comment">% DI[7]</span>
+
+<span class="comment">% Arduino variables to fire pneumatic cylinders</span>
+<span class="comment">% - as wired on the date of the demonstration 12/8/2015</span>
+pneumRed = <span class="string">'D10'</span>;
+pneumGreen = <span class="string">'D11'</span>;
+pneumBlue = <span class="string">'D12'</span>;
+
+<span class="comment">% Used by 'pwmDuino' object for opening and closing end-effector</span>
+pinClose = <span class="string">'D6'</span>;
+pinOpen = <span class="string">'D5'</span>;
+
+midX = 80; <span class="comment">% Middle pixel of the laneCam picture</span>
+offset = 20; <span class="comment">% Offset for declaring an object in the middle</span>
+distOpen = 78; <span class="comment">% Pixel distance for the end-effector to be 'closed'</span>
+distClose = 50; <span class="comment">% Pixel distance for the end-effector to be 'opened'</span>
+gainP_open = 0.45; <span class="comment">% Proportional gain (opening)</span>
+gainP_close = 0.65; <span class="comment">% Proportional gain (closing)</span>
+gainI_open = 0.05; <span class="comment">% Integral gain (opening)</span>
+gainI_close = 0.09; <span class="comment">% Integral gain (closing)</span>
+
+<span class="comment">% Miscellaneous Variables</span>
+randLane = randi(3); <span class="comment">% lane chosen to eject ball</span>
+detected = 0;
+objCenter = [];
+objRadius = [];
+Red = 0; redBall = false;
+Green = 0; greenBall = false;
+Blue = 0; blueBall = false;
+snapFiltered(:,:,1) = zeros([144,176]);
+snapFiltered(:,:,2) = zeros([144,176]);
+snapFiltered(:,:,3) = zeros([144,176]);
+distPix = [];
+writeDigitalPin(pwmDuino, pinOpen, 0);
+writeDigitalPin(pwmDuino, pinClose, 0);
+eeSensitivity = 0.9; <span class="comment">% Sensitivity of end-effector feature recognition | 0 to 1 - higher = more detections</span>
+cutFrameLow = 11; <span class="comment">% Lower pixel value of end-effector camera frame for image processing</span>
+cutFrameHigh = 32; <span class="comment">% Upper pixel value of end-effector camera frame for image processing</span>
+gainMax = 0.99; <span class="comment">% Maximum duty cycle (0 to 1) of pwm signal</span>
+gainMaxReached = false;
+firstRun = true; <span class="comment">% if true: checks end-effector position on first run of the program</span>
+watchCount = [];
+
+<span class="comment">% Used to increase the effects of integral gain on motor duty cycle</span>
+<span class="comment">% Lower = slower duty cycle increase</span>
+<span class="comment">% Higher = faster duty cycle increase</span>
+<span class="comment">% If too high - can make end-effector uncontrollable</span>
+gainOffset = 10;
+
+iteration = 0; <span class="comment">% Iteration number used currently to eject balls in sequence (vs. random)</span>
+
+<span class="comment">% Directions for preparing the demonstration</span>
+disp(<span class="string">'1) Turn on robot - Use Robot Neighborhood to run "Amaze-Balls"'</span>);
+disp(<span class="string">'2) Make sure end-effector is closed - turn on motor power supply'</span>);
+disp(<span class="string">'3) Make sure end-effector and lane camera objects are created properly'</span>);
+disp(<span class="string">'	- use preview(laneCam) &amp; preview(endEffCam) to view live feed'</span>);
+disp(<span class="string">'4) Run script "waitHome.m" to start process'</span>);
+</pre><pre class="codeoutput">*****************************************************
+*          FANUC INDUSTRIAL ROBOT TEAM              *
+*                  FALL 2015                        *
+*   JEREMY HOOPER | KARL NICOLAUS | RICHARD WOOD    *
+*****************************************************
+Initiate operation "SUCH AMAZE, VERY BALLS, MUCH WOW"
+</pre><pre class="codeoutput error">Error using initialization (line 17)
+Expected input number 1, INDEX, to be a scalar with value &lt;= 1.
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+% This program initializes the variables used throughout the process
+% of controlling the Fanuc M-16iB Industrial Robot Arm & the attached
+% end-effector.
+
+clc;
+disp('*****************************************************')
+disp('*          FANUC INDUSTRIAL ROBOT TEAM              *');
+disp('*                  FALL 2015                        *');
+disp('*   JEREMY HOOPER | KARL NICOLAUS | RICHARD WOOD    *');
+disp('*****************************************************');
+pause(5);
+
+
+clear; clc; warning off; close all;
+disp('Initiate operation "SUCH AMAZE, VERY BALLS, MUCH WOW"');
+% Initialize the object lane camera
+laneCam = webcam(2);
+laneCam.Resolution = '160x120';
+% Initialize the communication relay board
+CommsPneumDuino = arduino('com3','uno');
+% Initialize the motor control board
+pwmDuino = arduino('com6','uno');
+% Initialize the end-effector camera
+endEffCam = webcam(1);
+endEffCam.Resolution = '160x120';
+% endEffCam.Brightness = 150;
+
+% Initialize variables used throughout the program(s)
+
+% Arduino pin variables
+% - as wired on the date of the demonstration 12/8/2015
+laneRed = 'D2'; % DI[6] in robot controller
+laneGreen = 'D3'; % DI[5]
+laneBlue = 'D4'; % DI[4]
+dropRed = 'D5'; % DI[3]
+dropGreen = 'D6'; % DI[2]
+dropBlue = 'D7'; % DI[1]
+endEff = 'D8'; % DI[7]
+
+% Arduino variables to fire pneumatic cylinders
+% - as wired on the date of the demonstration 12/8/2015
+pneumRed = 'D10';
+pneumGreen = 'D11';
+pneumBlue = 'D12';
+
+% Used by 'pwmDuino' object for opening and closing end-effector
+pinClose = 'D6';
+pinOpen = 'D5';
+
+midX = 80; % Middle pixel of the laneCam picture
+offset = 20; % Offset for declaring an object in the middle
+distOpen = 78; % Pixel distance for the end-effector to be 'closed'
+distClose = 50; % Pixel distance for the end-effector to be 'opened'
+gainP_open = 0.45; % Proportional gain (opening)
+gainP_close = 0.65; % Proportional gain (closing)
+gainI_open = 0.05; % Integral gain (opening)
+gainI_close = 0.09; % Integral gain (closing)
+
+% Miscellaneous Variables
+randLane = randi(3); % lane chosen to eject ball
+detected = 0;
+objCenter = [];
+objRadius = [];
+Red = 0; redBall = false;
+Green = 0; greenBall = false;
+Blue = 0; blueBall = false;
+snapFiltered(:,:,1) = zeros([144,176]);
+snapFiltered(:,:,2) = zeros([144,176]);
+snapFiltered(:,:,3) = zeros([144,176]);
+distPix = [];
+writeDigitalPin(pwmDuino, pinOpen, 0);
+writeDigitalPin(pwmDuino, pinClose, 0);
+eeSensitivity = 0.9; % Sensitivity of end-effector feature recognition | 0 to 1 - higher = more detections
+cutFrameLow = 11; % Lower pixel value of end-effector camera frame for image processing
+cutFrameHigh = 32; % Upper pixel value of end-effector camera frame for image processing
+gainMax = 0.99; % Maximum duty cycle (0 to 1) of pwm signal
+gainMaxReached = false;
+firstRun = true; % if true: checks end-effector position on first run of the program
+watchCount = [];
+
+% Used to increase the effects of integral gain on motor duty cycle
+% Lower = slower duty cycle increase
+% Higher = faster duty cycle increase
+% If too high - can make end-effector uncontrollable
+gainOffset = 10;
+
+iteration = 0; % Iteration number used currently to eject balls in sequence (vs. random)
+
+% Directions for preparing the demonstration
+disp('1) Turn on robot - Use Robot Neighborhood to run "Amaze-Balls"');
+disp('2) Make sure end-effector is closed - turn on motor power supply');
+disp('3) Make sure end-effector and lane camera objects are created properly');
+disp('	- use preview(laneCam) & preview(endEffCam) to view live feed');
+disp('4) Run script "waitHome.m" to start process');
+
+##### SOURCE END #####
+--></body></html>
